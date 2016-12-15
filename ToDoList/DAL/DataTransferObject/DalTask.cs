@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace ORM
+namespace DAL.DataTransferObject
 {
-    public class Task
+    public class DalTask : IEntity
     {
         public int Id { get; set; }
 
