@@ -9,7 +9,5 @@ namespace DAL.DataTransferObject
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
-
-        public ICollection<DalToDoForm> Records { get; set; }
     }
 }

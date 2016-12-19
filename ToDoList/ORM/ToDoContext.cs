@@ -12,5 +12,13 @@ namespace ORM
         public DbSet<ToDoForm> ToDoForms { get; set; }
         public DbSet<Task> Tasks { get; set; }
         public DbSet<Author> Authors { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ToDoForm>()
+                .HasMany<Task>(t => t.Tasks)
+                .WithOptional(t => t.ToDoForm)
+                .WillCascadeOnDelete(true);
+        }
     }
 }

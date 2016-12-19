@@ -22,28 +22,36 @@ namespace DAL.RepositoryImplementations
 
         public IEnumerable<DalToDoForm> GetAll()
         {
-            return context.Set<ToDoForm>().ToList().Select(form =>
-            MapperDomainConfiguration.MapperInstance.Map<ToDoForm, DalToDoForm>(form)
-            );
+            IEnumerable<DalToDoForm> list = context.Set<ToDoForm>().ToList().Select(form =>
+                MapperDomainConfiguration.MapperInstance.Map<ToDoForm, DalToDoForm>(form)
+                );
+
+            return list;
         }
 
         public DalToDoForm Get(int id)
         {
-            var found = context.Set<ToDoForm>().FirstOrDefault(form => form.Id == id);
+            ToDoForm found = context.Set<ToDoForm>().FirstOrDefault(form => form.Id == id);
 
             return found == null ? null : MapperDomainConfiguration.MapperInstance.Map<ToDoForm, DalToDoForm>(found);
         }
 
         public void Create(DalToDoForm entity)
         {
-            var form = MapperDomainConfiguration.MapperInstance.Map<DalToDoForm, ToDoForm>(entity);
+            ToDoForm form = MapperDomainConfiguration.MapperInstance.Map<DalToDoForm, ToDoForm>(entity);
             context.Set<ToDoForm>().Add(form);
             context.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            context.Set<ToDoForm>().Where(form => form.Id == id).Delete();
+            //context.Set<ToDoForm>().Include(t => t.Tasks).SingleOrDefault(t => t.)
+            //context.Set<ToDoForm>().Include(t => t.Tasks).Where(form => form.Id == id).Delete();
+
+            ToDoForm form = new ToDoForm { Id = id };
+            context.Set<ToDoForm>().Attach(form);
+            context.Set<ToDoForm>().Remove(form);
+            context.SaveChanges();
         }
 
         public void Update(DalToDoForm entity)

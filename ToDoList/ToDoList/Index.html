@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html ng-app="todolist">
+
+<head>
+    <title>ToDoList</title>
+    <meta charset="utf-8" />
+    <script src="/Scripts/angular.js"></script>
+    <script src="/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="/Scripts/bootstrap.min.js"></script>
+    <script src="/Scripts/custom/todolist.js"></script>
+    <link href="/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/custom/glyphicon.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/custom/interaction.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body ng-controller="todoforms">
+    <div class="container">
+        <div ng-repeat="form in todoforms" class="panel panel-info">
+            <div class="panel-heading text-center">{{form.Title}}<span class="glyphicon glyphicon-remove pull-right" ng-click="deleteForm(form.Id)"></span></div>
+            <div class="panel-body">
+                <ul class="list-group">
+                    <li ng-repeat="task in form.Tasks" class="list-group-item">
+                        <div class="input-group">
+                            <textarea class="form-control" ng-model="task.Content"></textarea>
+                            <span class="input-group-addon" ng-click="removeTask($parent.$index, $index)"><i class="glyphicon glyphicon-remove"></i>
+                            </span>
+                        </div>
+                    </li>
+                </ul>
+                <div class="text-center"><span class="glyphicon glyphicon-plus-sign" ng-click="addTask($index)"></span></div>
+            </div>
+            <div class="panel-footer">Author: {{form.Author.FirstName + " " + form.Author.LastName}}</div>
+        </div>
+        <!--<div ng-repeat="n in [1,2]">
+            {{n}}
+            <div ng-repeat="n in [4,5,6]">
+                {{n}}
+            </div>
+            <div>
+                999
+            </div>
+        </div>-->
+        <!--<div class="row">
+            <div class="col-md-8">
+                <div ng-repeat="img in images" class="panel panel-default">
+                    <div class="panel-heading" ng-click="showToggle($index)">{{img.name}}</div>
+                    <div class="panel-body" ng-show="img.flag" ng-style="{'background-color': '{{img.bgColor}}'}">
+                        <img ng-src="{{img.url}}" ng-style="{'width': '350px'}" alt="" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <input type="text" class="form-control" ng-model="newName" placeholder="Name" />
+                <input type="text" class="form-control" ng-model="newUrl" placeholder="Url" />
+                <input type="text" class="form-control" ng-model="newBackgroundColor" placeholder="bgColor" style="color: red" />
+                <img ng-src="{{newUrl}}" alt="" style="width: 350px;" />
+                <button type="button" class="btn btn-default" ng-click="addImg()">Add image</button>
+            </div>
+        </div>-->
+        <hr />
+        <footer>
+            <!--<p>&copy; @My Web API Application</p>-->
+        </footer>
+    </div>
+</body>
+
+</html>
