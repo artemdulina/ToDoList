@@ -12,16 +12,39 @@
 
             $scope.todoforms = [];
 
-            /*$scope.postData = function () {
-                $http.post('/Home/SaveImage/', $scope.imagesWithCommentaries);
-            };*/
-
             $scope.removeTask = function (parentIndex, index) {
                 $scope.todoforms[parentIndex].Tasks.splice(index, 1);
             };
 
-            $scope.deleteForm = function (index) {
-                alert(index);
+            $scope.createForm = function () {
+                var empty = {
+                    Title: "Enter title here",
+                    Author: {
+                        FirstName: "",
+                        LastName: ""
+                    },
+                    Tasks: [{
+                        Content: ""
+                    }]
+                }
+                $http.put("/api/todolist/", empty)
+                .then(function (responce) {
+                    //change id
+                    
+                    $scope.todoforms.unshift(empty);
+                });
+            };
+
+            $scope.deleteForm = function (databaseIndex, onPageIndex) {
+                var answer = confirm("Do you really want to delete this form?");
+
+                if (answer) {
+                    $http.delete("/api/todolist/" + databaseIndex)
+                        .then(function (response) {
+                            $scope.todoforms.splice(onPageIndex, 1);
+                            console.dir(response);
+                        });
+                }
             };
 
             $scope.addTask = function (currentFormIndex) {

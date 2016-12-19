@@ -6,12 +6,14 @@ using System.Linq;
 using DAL.Configurations;
 using DAL.DataTransferObject;
 using DAL.Repository;
+using NLog;
 using ORM;
 
 namespace DAL.RepositoryImplementations
 {
     public class ToDoFormRepository : IToDoFormRepository
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         private readonly DbContext context;
 
         public ToDoFormRepository(DbContext context)
@@ -38,9 +40,16 @@ namespace DAL.RepositoryImplementations
 
         public void Create(DalToDoForm entity)
         {
-            ToDoForm form = MapperDomainConfiguration.MapperInstance.Map<DalToDoForm, ToDoForm>(entity);
-            context.Set<ToDoForm>().Add(form);
-            context.SaveChanges();
+            try
+            {
+                ToDoForm form = MapperDomainConfiguration.MapperInstance.Map<DalToDoForm, ToDoForm>(entity);
+                context.Set<ToDoForm>().Add(form);
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                logger.Info(ex.Message);
+            }
         }
 
         public void Delete(int id)

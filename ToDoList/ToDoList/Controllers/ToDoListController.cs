@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Web.Http;
 using DAL.DataTransferObject;
 using DAL.Repository;
+using NLog;
 
 namespace ToDoList.Controllers
 {
     public class ToDoListController : ApiController
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         private readonly IToDoFormRepository toDoFormRepository;
 
         public ToDoListController(IToDoFormRepository toDoFormRepository)
@@ -49,6 +51,17 @@ namespace ToDoList.Controllers
         public void Delete(int id)
         {
             toDoFormRepository.Delete(id);
+        }
+
+        [HttpPut]
+        public void Add(DalToDoForm form)
+        {
+            form.CreationTime = DateTime.UtcNow;
+            foreach (DalTask dalTask in form.Tasks)
+            {
+                dalTask.CreationTime = DateTime.UtcNow;
+            }
+            toDoFormRepository.Create(form);
         }
     }
 }
